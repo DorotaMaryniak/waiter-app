@@ -1,13 +1,18 @@
 
 import { Routes, Route } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import MainPage from './components/pages/MainPage';
-import NotFound from './components/pages/NotFound';
-import SingleTable from './components/pages/SingleTable';
+import MainPage from './components/pages/MainPage/MainPage';
+import NotFound from './components/pages/NotFound/NotFound';
+import SingleTable from './components/pages/SingleTable/SingleTable';
 import Header from './components/views/Header';
 import Footer from './components/views/Footer';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchTables } from './redux/tableReducer';
 
 const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => dispatch(fetchTables()), [dispatch]);
   return(
 
     <Container>
