@@ -1,45 +1,35 @@
-
 import SingleTableOverview from "../SingleTableOverview/SingleTableOverview";
-import SingleTableDetails from "../SingleTableDetails/SingleTableDetails";
-import { addTable, addTableRequest, getAllTables, fetchTables, updateTables } from "../../../redux/tableReducer";
+import TableForm from "../TableForm/TableForm";
+import Spinner from 'react-bootstrap/Spinner';
+import { getAllTables } from "../../../redux/tableReducer";
 import { useSelector } from 'react-redux';
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-//import shortid from 'shortid';
 
 const Tables = () => {
-  //const columns = useSelector(getAllColumns);
+
   const tables = useSelector(getAllTables);
-  const [newTableId, setNewTableId] = useState(parseInt(tables.length) + 1);
 
-  const dispatch = useDispatch();
-
-  const handleAddTable = (event) => {
-    event.preventDefault();
-    const newTable = {
-      id: parseInt(newTableId),
-      status: "Free",
-      peopleAmount: 0,
-      maxPeopleAmount: 4,
-      bill: 0
-    };
-
-    dispatch(addTableRequest(newTable));
-
-  }
+  if (!tables.length) {
     return (
-      <div>
-          {tables.map(table =>
+      <div className="mt-5 mb-5 d-flex align-items-center justify-content-center">
+        <Spinner />
+      </div>
+    );
+  } else {
+    return (
+      <div className="d-flex flex-column align-items-center justify-content-center">
+        <h4 className="mt-4">All Tables List</h4>
+        <ul className="col-12 d-flex flex-column align-items-start justify-content-start">
+        {tables.map(table =>
                 <SingleTableOverview
                 key={table.id}
                 id={table.id}
                 status={table.status} />
                 )}
-          <input value={newTableId} placeholder="New Table ID..." onChange={event => setNewTableId(event.target.value)}></input>
-          <button onClick={event => handleAddTable(event)}>ADD TABLE</button>
-
-      </div>
-    );
-  };
+        </ul>
+        <TableForm /> 
+        </div>
+    ); 
+  }
+};
 
 export default Tables;
