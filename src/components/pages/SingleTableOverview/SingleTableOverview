@@ -2,26 +2,31 @@
 //import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 //import { removeTable, updateTables } from '../../../redux/tableReducer';
+import { UseSelector, useSelector } from 'react-redux/es/hooks/useSelector';
+import { getTableById, getAllTables } from '../../../redux/tableReducer';
+import { Link } from 'react-router-dom';
 
 const SingleTableOverview = props => {
 
-  const [id, setId] = useState(props.id);
-  const [status, setStatus] = useState(props.status);
- // const [peopleAmount, setPeopleAmount] = useState(props.peopleAmount);
+  const singleTableData = useSelector(state => getTableById(state, props.id));
+ //const [id, setId] = useState(props.id);
+  //const [status, setStatus] = useState(props.status);
+  const [id, setId] = useState(singleTableData.id);
+  const [status, setStatus] = useState(singleTableData.status);
+
+  // const [peopleAmount, setPeopleAmount] = useState(props.peopleAmount);
  // const [maxPeopleAmount, setMaxPeopleAmount] = useState(props.maxPeopleAmount);
  // const [bill, setBill] = useState(props.bill);
 
   //const dispatch = useDispatch();
 
-  const handleSeeMore = (event) => {
-    event.preventDefault();
-   console.log(event,props.id);
-  }
 
   return (
     <li>
       <h4>Table {id} Status {status}</h4>
-      <button onClick={event => handleSeeMore(event, id)}>SEE MORE</button>
+
+
+      <Link to={`table/${props.id}`}>Show More</Link>
     </li>
   );
 };

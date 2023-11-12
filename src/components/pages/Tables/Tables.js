@@ -4,25 +4,28 @@ import SingleTableDetails from "../SingleTableDetails/SingleTableDetails";
 import { addTable, addTableRequest, getAllTables, fetchTables, updateTables } from "../../../redux/tableReducer";
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 //import shortid from 'shortid';
 
 const Tables = () => {
-  const dispatch = useDispatch();
   //const columns = useSelector(getAllColumns);
   const tables = useSelector(getAllTables);
-  console.log(tables);
+  const [newTableId, setNewTableId] = useState(parseInt(tables.length) + 1);
+
+  const dispatch = useDispatch();
+
   const handleAddTable = (event) => {
     event.preventDefault();
     const newTable = {
-      id: (tables.length + 1).toString(),
+      id: parseInt(newTableId),
       status: "Free",
-      peopleAmount: "0",
-      maxPeopleAmount: "4",
-      bill: "0"
+      peopleAmount: 0,
+      maxPeopleAmount: 4,
+      bill: 0
     };
-    //dispatch({ type: 'ADD_TABLE', payload: { newTable } });
+
     dispatch(addTableRequest(newTable));
-    //dispatch(addTable(newTable));
+
   }
     return (
       <div>
@@ -32,6 +35,7 @@ const Tables = () => {
                 id={table.id}
                 status={table.status} />
                 )}
+          <input value={newTableId} placeholder="New Table ID..." onChange={event => setNewTableId(event.target.value)}></input>
           <button onClick={event => handleAddTable(event)}>ADD TABLE</button>
 
       </div>
